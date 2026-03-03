@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev       # Start development server (Vite) — also serves /api/generate locally
+npm run dev       # Start development server (Vite)
 npm run build     # Production build to dist/
 npm run preview   # Preview production build locally
 ```
@@ -18,7 +18,7 @@ Single-page React app (Vite) with all logic in **`App.jsx`**. There is no routin
 
 **Data flow:**
 1. User enters a topic + student word associations + a word count slider value
-2. `generate()` POSTs to `/api/generate` (a serverless function) requesting ~N associated words scored 1–100 by frequency
+2. `generate()` calls the Anthropic API directly from the browser requesting ~N associated words scored 1–100 by frequency
 3. The response (JSON array `[{word, score}]`) is parsed and passed to `renderVisualization()`
 4. `renderVisualization()` draws everything onto a `<canvas>` element (900×1100px) using the Canvas 2D API — no external visualization library
 
@@ -29,6 +29,6 @@ Single-page React app (Vite) with all logic in **`App.jsx`**. There is no routin
 - Word size and color are driven by normalized score via `fieldColor()` (HSL)
 - Final canvas can be exported as PNG via `download()`
 
-**API proxy (`api/generate.js`):** The Anthropic API key never reaches the browser. The client POSTs to `/api/generate`, which is a Vercel serverless function that adds the key server-side and forwards to Anthropic. In local dev, a Vite plugin middleware in `vite.config.js` handles the same `/api/generate` route using `ANTHROPIC_API_KEY` from `.env`.
+**API key:** Stored as `ANTHROPIC_API_KEY` in GitHub Actions secrets and injected at build time as `VITE_ANTHROPIC_API_KEY`. For local dev, add `VITE_ANTHROPIC_API_KEY` to `.env`. The fetch includes `"anthropic-dangerous-direct-browser-access": "true"` which Anthropic requires for direct browser calls.
 
-**Deployment:** Hosted on Vercel. `ANTHROPIC_API_KEY` must be set as an environment variable in the Vercel project settings. Vercel auto-deploys on push to `main`.
+**Deployment:** GitHub Pages via GitHub Actions (`.github/workflows/deploy.yml`). Pushes to `main` trigger an automatic build and deploy. Before the first deploy, `ANTHROPIC_API_KEY` must be added under repo **Settings → Secrets and variables → Actions**.
