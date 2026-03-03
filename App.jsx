@@ -227,19 +227,11 @@ export default function App() {
   const [statusType, setStatusType] = useState("");
   const [skipped, setSkipped] = useState(0);
   const [generated, setGenerated] = useState(false);
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem("anthropic_api_key") || "");
-  const [apiKeySaved, setApiKeySaved] = useState(!!localStorage.getItem("anthropic_api_key"));
   const canvasRef = useRef(null);
-
-  const saveApiKey = () => {
-    localStorage.setItem("anthropic_api_key", apiKey);
-    setApiKeySaved(true);
-  };
 
   const generate = async () => {
     const t = topic.trim();
     const studentWords = studentInput.split(/,|\n/).map(s => s.trim()).filter(Boolean);
-    if (!apiKey.trim()) { setStatusType("error"); setStatus("Please enter your Anthropic API key."); return; }
     if (!t) { setStatusType("error"); setStatus("Please enter a topic."); return; }
     if (studentWords.length === 0) { setStatusType("error"); setStatus("Please enter at least one student association."); return; }
 
@@ -257,14 +249,9 @@ Return ONLY a JSON array of objects with "word" and "score" fields. Example:
 No explanation, no markdown, just the JSON array.`;
 
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/generate", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "x-api-key": apiKey.trim(),
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
           max_tokens: 4000,
@@ -328,36 +315,6 @@ No explanation, no markdown, just the JSON array.`;
         marginBottom: 28,
         marginTop: 0
       }}>A Human vs. A.I. Writing Visualization Tool</p>
-
-      <div style={{ marginBottom: 24, padding: "14px 16px", background: "#e8e4de", borderRadius: 4, display: "flex", flexDirection: "column", gap: 8 }}>
-        <label style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "#888" }}>
-          Anthropic API Key {apiKeySaved && <span style={{ color: "#5a9a5a" }}>· saved</span>}
-        </label>
-        <div style={{ display: "flex", gap: 8 }}>
-          <input
-            type="password"
-            value={apiKey}
-            onChange={e => { setApiKey(e.target.value); setApiKeySaved(false); }}
-            placeholder="sk-ant-api03-..."
-            style={{
-              flex: 1, fontFamily: "monospace", fontSize: 13,
-              background: "#fff", border: "1px solid #ddd", borderRadius: 3,
-              padding: "8px 10px", color: "#1a1208", outline: "none"
-            }}
-          />
-          <button
-            onClick={saveApiKey}
-            style={{
-              fontFamily: "inherit", fontSize: 11, letterSpacing: "0.12em",
-              textTransform: "uppercase", background: "#2a4a6a", color: "#fff",
-              border: "none", borderRadius: 3, padding: "8px 16px", cursor: "pointer"
-            }}
-          >Save</button>
-        </div>
-        <p style={{ fontSize: 11, color: "#aaa", margin: 0 }}>
-          Your key is stored only in your browser and never sent anywhere except directly to Anthropic. Get one at console.anthropic.com.
-        </p>
-      </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
         <div style={{ gridColumn: "1 / -1", display: "flex", flexDirection: "column", gap: 6 }}>
