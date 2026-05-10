@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-const W = 900, H = 1100;
+const W = 1100, H = 750;
 const cx = W / 2, cy = H / 2;
 
 function fieldColor(norm) {
@@ -158,7 +158,7 @@ function renderVisualization(canvas, topic, wordData, studentWords) {
   const minScore = Math.min(...scores);
   const maxScore = Math.max(...scores);
   const scoreRange = maxScore - minScore || 1;
-  const margin = 18;
+  const margin = 10;
   let skipped = 0;
 
   const sorted = [...wordData].sort((a, b) => b.score - a.score);
@@ -173,18 +173,12 @@ function renderVisualization(canvas, topic, wordData, studentWords) {
     let placed = false;
 
     for (let attempt = 0; attempt < 400; attempt++) {
-      const angle = nextRand() * 2 * Math.PI;
-      const minR = pearlRadius + 54;
-      const maxR = Math.min(cx, cy) - margin - size;
-      if (maxR < minR) break;
-      const radius = minR + nextRand() * (maxR - minR);
-      const x = cx + Math.cos(angle) * radius;
-      const y = cy + Math.sin(angle) * radius;
-      if (x - size * 2 < margin || x + size * 2 > W - margin) continue;
-      if (y - size < margin || y > H - margin) continue;
-      if (Math.hypot(x - cx, y - cy) < pearlRadius + 52) continue;
+      const x = margin + nextRand() * (W - 2 * margin);
+      const y = margin + nextRand() * (H - 2 * margin);
 
       const box = getBBox(ctx, word, x, y, size);
+      if (box.x1 < margin || box.x2 > W - margin) continue;
+      if (box.y1 < margin || box.y2 > H - margin) continue;
       const closestX = Math.max(box.x1, Math.min(cx, box.x2));
       const closestY = Math.max(box.y1, Math.min(cy, box.y2));
       if (Math.hypot(closestX - cx, closestY - cy) < pearlRadius + 8) continue;
@@ -304,7 +298,7 @@ No explanation, no markdown, just the JSON array.`;
       background: "#e8eef6",
       minHeight: "100vh",
       padding: "30px 24px 50px",
-      maxWidth: 960,
+      maxWidth: 1100,
       margin: "0 auto",
       color: "#1e2d3e"
     }}>
