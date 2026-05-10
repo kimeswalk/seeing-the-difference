@@ -297,20 +297,20 @@ No explanation, no markdown, just the JSON array.`;
 
   return (
     <div style={{
-      fontFamily: "'Josefin Sans', 'Trebuchet MS', sans-serif",
-      background: "#f0ede8",
+      fontFamily: "Arial, 'Helvetica Neue', sans-serif",
+      background: "#e8eef6",
       minHeight: "100vh",
       padding: "30px 24px 50px",
       maxWidth: 960,
       margin: "0 auto",
-      color: "#2a2318"
+      color: "#1e2d3e"
     }}>
       <h1 style={{
-        fontFamily: "Georgia, serif",
+        fontFamily: "Arial, 'Helvetica Neue', sans-serif",
         fontSize: "2rem",
         fontWeight: 400,
         marginBottom: 4,
-        color: "#1a1208"
+        color: "#141e2e"
       }}>Seeing the Difference</h1>
       <p style={{
         fontSize: 12,
@@ -331,9 +331,9 @@ No explanation, no markdown, just the JSON array.`;
             onKeyDown={e => e.key === "Enter" && generate()}
             placeholder="e.g. Imagery in Tolstoy's Anna Karenina"
             style={{
-              fontFamily: "Georgia, serif", fontSize: 15,
+              fontFamily: "Arial, 'Helvetica Neue', sans-serif", fontSize: 15,
               background: "#fff", border: "1px solid #ddd", borderRadius: 3,
-              padding: "10px 12px", color: "#1a1208", outline: "none"
+              padding: "10px 12px", color: "#141e2e", outline: "none"
             }}
           />
         </div>
@@ -348,7 +348,7 @@ No explanation, no markdown, just the JSON array.`;
               onChange={e => setWordCount(parseInt(e.target.value))}
               style={{ flex: 1, accentColor: "#2a6090" }}
             />
-            <span style={{ fontFamily: "Georgia, serif", fontSize: 17, minWidth: 36, textAlign: "right" }}>{wordCount}</span>
+            <span style={{ fontFamily: "Arial, 'Helvetica Neue', sans-serif", fontSize: 17, minWidth: 36, textAlign: "right" }}>{wordCount}</span>
           </div>
         </div>
 
@@ -362,9 +362,9 @@ No explanation, no markdown, just the JSON array.`;
             rows={3}
             placeholder="Enter words separated by commas or new lines"
             style={{
-              fontFamily: "Georgia, serif", fontSize: 15,
+              fontFamily: "Arial, 'Helvetica Neue', sans-serif", fontSize: 15,
               background: "#fff", border: "1px solid #ddd", borderRadius: 3,
-              padding: "10px 12px", color: "#1a1208", outline: "none", resize: "vertical"
+              padding: "10px 12px", color: "#141e2e", outline: "none", resize: "vertical"
             }}
           />
         </div>
