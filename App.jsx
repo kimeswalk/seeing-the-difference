@@ -185,6 +185,9 @@ function renderVisualization(canvas, topic, wordData, studentWords) {
       if (Math.hypot(x - cx, y - cy) < pearlRadius + 52) continue;
 
       const box = getBBox(ctx, word, x, y, size);
+      const closestX = Math.max(box.x1, Math.min(cx, box.x2));
+      const closestY = Math.max(box.y1, Math.min(cy, box.y2));
+      if (Math.hypot(closestX - cx, closestY - cy) < pearlRadius + 8) continue;
       if (anyOverlap(box, placedBoxes, 7)) continue;
 
       const rotation = (nextRand() - 0.5) * 0.30;
